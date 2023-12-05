@@ -14,8 +14,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```
 
-
-
 ```{r pressure, echo=FALSE}
 #install.packages("ggplot2")
 #install.packages("rpart")				        # Popular decision tree algorithm
@@ -53,8 +51,10 @@ library(devtools)
 ```{r cars}
 #Ben total_data <- read.csv("~/Desktop/ML FInal Project/loan_approval_dataset 2.csv") # Load loan dataset
 
-#Chance 
-total_data <- read.csv("~/Desktop/Machine Learning/loan_approval_dataset 2.csv") # Load loan dataset
+#Brett total_data <- read.csv("~/Desktop/Machine Learning/loan_approval_dataset 2.csv") # Load loan dataset
+
+#Chance
+total_data <- read.csv("~/Desktop/GraduateSchool/S2/Machine/loan_approval_dataset 2.csv")
 
 #Jack total_data <- 
 
@@ -81,6 +81,7 @@ summary(as.factor(train_data$loan_status))
 ```
 
 ### Data Visualizations
+
 ```{r}
 plot_dat <- total_data 
 plot_dat$loan_status <-  as.factor(total_data$loan_status)
@@ -116,6 +117,7 @@ g2 <- ggplot(plot_dat, aes(x = cibil_score, fill = loan_status)) +
 
 g2 
 ```
+
 ```{r}
 g3 <- ggplot(plot_dat, aes(x = education, fill = loan_status)) + 
   geom_bar(alpha = 0.5, position = "dodge") + 
@@ -150,10 +152,6 @@ g4
 
 ```
 
-
-
-
-
 ### Decision Tree:
 
 We are now ready to fit a classification tree in order to predict if an individual will seek or not seek help for a mental health issue. To build a decision tree, we will use the \`rpart()\` function. We will build our first tree using all the variables, using \`\~.\` as we did for logistic and linear regression.
@@ -168,7 +166,6 @@ par(xpd = NA) # Set this avoid cut-off text
 
 The default plot for decision trees in R is terrible. To remedy this we can use \`fancyRpartPlot()\`.
 
-
 ```{r Plot tree 1}
 fancyRpartPlot(tree_1) # Plot fancy tree
 ```
@@ -179,7 +176,7 @@ We can also the view the tree structure by calling the fitted tree:
 # tree_1
 ```
 
-If we run the \`summary()\` command on the tree this prints out a wealth of information regarding the tree. 
+If we run the \`summary()\` command on the tree this prints out a wealth of information regarding the tree.
 
 ```{r Summary tree 1}
 summary(tree_1)
@@ -189,7 +186,6 @@ The initial table has some valuable information:
 
 \### Selecting CP
 
-
 In fitting a basic tree we are most interested in the complexity parameter. To view the complexity parameter table from the summary statistics by itself we can run \`printcp()\`:
 
 ```{r Print CP}
@@ -197,8 +193,6 @@ printcp(tree_1) # Print complexity parameter table
 ```
 
 A better way to interpret the complexity parameter is to plots its progression and compare different values with the relative error they lead to:
-
-
 
 ```{r plot cp}
 plotcp(tree_1) # Plot cp
@@ -211,30 +205,11 @@ control = rpart.control(cp = 0.11)) # Set parameters
 fancyRpartPlot(tree_2) # Plot fancy tree
 ```
 
-We can also set some other parameters inside \`rpart.control()\`:
-
-
-\* minsplit -	the minimum number of observations that must exist in a node in order for a split to be attempted.
-
-\* minbucket	- the minimum number of observations in any terminal node.
-
-\* xval - number of cross-validations.
-
-\* maxdepth -	Set the maximum depth of any node of the final tree, with the root node counted as depth 0. Values greater than 30 rpart will give nonsense results on 32-bit machines.
-
-
-
 ## Imbalanced Data
-
 
 ```{r}
 summary(as.factor(total_data$loan_status))
 ```
-
-
-\* Bootstrap re-sampling - Sample with replacement from the minority class to re-balance the data
-
-\* SMOTE - Synthetic minority over-sampling technique, this creates new synthetic samples for the minority class.
 
 ### Bootstrap resampling
 
@@ -271,7 +246,6 @@ fancyRpartPlot(tree_3) # Plot fancy tree
 ### Prediction prelim
 
 To test how our model will perform on new data we can split the data into training and test sets. We will use the data which is already split into help and no help to ensure we have an equal proportion of samples in each class for both our training and test sets. We will use 20% of the data for testing. To do this we can use the stratified function which will create a stratified sample for our dataset.
-
 
 ```{r train test}
  set.seed(123456) # Set seed
@@ -311,8 +285,6 @@ preds <- predict(tree_5, test_dat) # Predict test samples
 
 We can the visualize the results of our prediction by class:
 
-
-
 ```{r plot predictions}
 # Join predictions (second column is prob of sought help) and test response
 plot_dat <- cbind.data.frame(preds[,2], test_dat$loan_status)
@@ -348,7 +320,6 @@ g_4
 
 Lets use a cut-off of 0.6 and see what the results would look like in a confusion matrix:
 
-
 ```{r confusion matrix}
 preds_char <- rep("Rejected", nrow(plot_dat)) # Create vector for predictions with deafult value
 preds_char[which(plot_dat$probability >= 0.6)] <- "Approved" # Select sought help predictions
@@ -356,7 +327,6 @@ preds_char[which(plot_dat$probability >= 0.6)] <- "Approved" # Select sought hel
 ```
 
 Lets see if using smote on the training data can help improve our accuracy;
-
 
 ```{r smote preds}
 # Run smote
@@ -378,7 +348,6 @@ preds_char[which(plot_dat$probability >= 0.6)] <- "Approved" # Select sought hel
 
 Not much of an increase, lets try combining smote and modifying the parameter values. First we can build a maximal tree and look at the cp:
 
-
 ```{r smote cp}
 # Set seed
 set.seed(999999)
@@ -393,7 +362,6 @@ printcp(tree_7)
 ```
 
 The cp appears to be minimized about 0.11. Instead of returning probabilities from the prediction we can set \`type="class"\` in the predict function to get the function to return a class prediction.
-
 
 ```{r tune smote}
 
