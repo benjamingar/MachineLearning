@@ -365,4 +365,4 @@ confusionMatrix(table(preds,  test_dat$loan_status)) # Create confusion matrix
 fancyRpartPlot(tree_8)
 ```
 
-### Comparing Data
+### Logistic Regression:
