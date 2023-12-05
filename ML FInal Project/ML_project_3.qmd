@@ -166,8 +166,8 @@ fancyRpartPlot(tree_1) # Plot fancy tree
 
 If we run the \`summary()\` command on the tree this prints out a wealth of information regarding the tree.
 
-```{r Summary tree 1}
-summary(tree_1)
+```{r Summary tree 1, echo=FALSE}
+# summary(tree_1)
 ```
 
 The initial table has some valuable information:
@@ -176,8 +176,8 @@ The initial table has some valuable information:
 
 In fitting a basic tree we are most interested in the complexity parameter. To view the complexity parameter table from the summary statistics by itself we can run \`printcp()\`:
 
-```{r Print CP}
-printcp(tree_1) # Print complexity parameter table
+```{r Print CP, echo=FALSE}
+# printcp(tree_1) # Print complexity parameter table
 ```
 
 A better way to interpret the complexity parameter is to plots its progression and compare different values with the relative error they lead to:
@@ -273,7 +273,7 @@ preds <- predict(tree_5, test_dat) # Predict test samples
 
 We can the visualize the results of our prediction by class:
 
-```{r plot predictions}
+```{r plot predictions, echo=FALSE}
 # Join predictions (second column is prob of sought help) and test response
 plot_dat <- cbind.data.frame(preds[,2], test_dat$loan_status)
 names(plot_dat) <- c("probability", "response")
