@@ -58,9 +58,6 @@ total_data <- read.csv("~/Desktop/GraduateSchool/S2/Machine/loan_approval_datase
 
 #Jack total_data <- 
 
-summary(as.factor(total_data$loan_status))
-
-summary(total_data)
 ```
 
 ```{r}
@@ -152,28 +149,19 @@ g4
 
 ```
 
-### Decision Tree:
+### Decision Tree Model:
 
-We are now ready to fit a classification tree in order to predict if an individual will seek or not seek help for a mental health issue. To build a decision tree, we will use the \`rpart()\` function. We will build our first tree using all the variables, using \`\~.\` as we did for logistic and linear regression.
+We are now ready to fit a classification tree in order to predict if an individual will be approved or rejected for a loan.
 
 ```{r Decision tree 1}
 tree_1 <- rpart(loan_status ~., # Set tree formula
 data = total_data) # Set dataset
 par(xpd = NA) # Set this avoid cut-off text
-#plot(tree_1)  # Plot tree
-#text(tree_1, digits = 3) # Add text
-```
 
-The default plot for decision trees in R is terrible. To remedy this we can use \`fancyRpartPlot()\`.
+```
 
 ```{r Plot tree 1}
 fancyRpartPlot(tree_1) # Plot fancy tree
-```
-
-We can also the view the tree structure by calling the fitted tree:
-
-```{r Call tree}
-# tree_1
 ```
 
 If we run the \`summary()\` command on the tree this prints out a wealth of information regarding the tree.
@@ -361,19 +349,20 @@ plotcp(tree_7)
 printcp(tree_7)
 ```
 
-The cp appears to be minimized about 0.11. Instead of returning probabilities from the prediction we can set \`type="class"\` in the predict function to get the function to return a class prediction.
+The cp appears to be minimized to about 0.081. Instead of returning probabilities from the prediction we can set \`type="class"\` in the predict function to get the function to return a class prediction.
 
 ```{r tune smote}
 
 # Build tree
 tree_8 <- rpart(loan_status ~., # Set tree formula
 data = smote_dat_2, # Set data
-control = rpart.control(cp = 0.11)) # Select cp
+control = rpart.control(cp = 0.081)) # Select cp
 
 # Predict test data
 preds <- predict(tree_8, test_dat, type = "class")
 
 confusionMatrix(table(preds,  test_dat$loan_status)) # Create confusion matrix
+fancyRpartPlot(tree_8)
 ```
 
 ### Comparing Data
