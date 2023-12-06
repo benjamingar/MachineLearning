@@ -61,7 +61,7 @@ total_data <- read.csv("~/Desktop/GraduateSchool/S2/Machine/loan_approval_datase
 
 ```
 
-```{r}
+```{r, echo=FALSE}
 set.seed(42042069)
 
 total_obs <- dim(total_data)[1]
@@ -73,9 +73,13 @@ test_data <- total_data[-train_data_indices,]
 # Record the size of training data and test data
 train_obs <- dim(train_data)[1]
 
-summary(total_data)
+#summary(total_data)
 
-summary(as.factor(train_data$loan_status))
+#summary(as.factor(train_data$loan_status))
+```
+
+```{r}
+head(total_data)
 ```
 
 ### Data Visualizations
@@ -83,7 +87,7 @@ summary(as.factor(train_data$loan_status))
 ```{r}
 plot_dat <- total_data 
 plot_dat$loan_status <-  as.factor(total_data$loan_status)
-head(plot_dat)
+#head(plot_dat)
 
 g_1 <- ggplot(plot_dat, aes(x = income_annum, fill = loan_status)) + 
   geom_density(alpha = 0.55) + 
