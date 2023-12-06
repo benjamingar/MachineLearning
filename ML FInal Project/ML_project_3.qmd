@@ -52,10 +52,11 @@ library(glmnet)
 ```{r cars, echo=FALSE}
 #Ben total_data <- read.csv("~/Desktop/ML FInal Project/loan_approval_dataset 2.csv") # Load loan dataset
 
-#Brett total_data <- read.csv("~/Desktop/Machine Learning/loan_approval_dataset 2.csv") # Load loan dataset
+# Brett 
+total_data <- read.csv("~/Desktop/Machine Learning/loan_approval_dataset 2.csv") # Load loan dataset
 
 #Chance
-total_data <- read.csv("~/Desktop/GraduateSchool/S2/Machine/loan_approval_dataset 2.csv")
+# total_data <- read.csv("~/Desktop/GraduateSchool/S2/Machine/loan_approval_dataset 2.csv")
 
 #Jack total_data <- 
 
@@ -77,6 +78,12 @@ train_obs <- dim(train_data)[1]
 
 #summary(as.factor(train_data$loan_status))
 ```
+
+### Comparing to a Historical Data Set
+
+When looking at the data source provided on our feedback, Sheikh, Goel & Kumar (2020) looked at 1,500 cases with 18 total categories, 10 numerical and 8 categorical variables, and split 80:20 and 70:30 for two different sets each. Those with comparatively low 'CIBIL' scores will often result in the best predictor of whether a loan will be approved based on previous history of loans defaulting, meaning legal obligations of a loan are not being met. Applicants with a higher amount of income and a smaller amount applied for will often pay back loans, leading to more loans getting approved.
+
+*M. A. Sheikh, A. K. Goel and T. Kumar, "An Approach for Prediction of Loan Approval using Machine Learning Algorithm," 2020 International Conference on Electronics and Sustainable Communication Systems (ICESC), Coimbatore, India, 2020, pp. 490-494, doi: 10.1109/ICESC48915.2020.9155614.*
 
 ```{r}
 head(total_data)
