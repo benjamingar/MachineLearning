@@ -49,7 +49,7 @@ library(glmnet)
 
 ### Reading and Separating Data:
 
-```{r cars}
+```{r cars, echo=FALSE}
 #Ben total_data <- read.csv("~/Desktop/ML FInal Project/loan_approval_dataset 2.csv") # Load loan dataset
 
 #Brett total_data <- read.csv("~/Desktop/Machine Learning/loan_approval_dataset 2.csv") # Load loan dataset
@@ -154,7 +154,7 @@ g4
 
 We are now ready to fit a classification tree in order to predict if an individual will be approved or rejected for a loan.
 
-```{r Decision tree 1}
+```{r Decision tree 1, echo=FALSE}
 tree_1 <- rpart(loan_status ~., # Set tree formula
 data = total_data) # Set dataset
 par(xpd = NA) # Set this avoid cut-off text
@@ -196,7 +196,7 @@ fancyRpartPlot(tree_2) # Plot fancy tree
 
 ## Imbalanced Data
 
-```{r}
+```{r, echo=FALSE}
 summary(as.factor(total_data$loan_status))
 ```
 
@@ -204,7 +204,7 @@ summary(as.factor(total_data$loan_status))
 
 To carry out bootstrap re-sampling we simply generate a random selection of indices from the minority class to use in the model, in effect this randomly duplicates some of the minority class samples:
 
-```{r bootstrap resample}
+```{r bootstrap resample, echo=FALSE}
 set.seed(123456) # Set seed for sampling
 # Split data into approved and rejected classes
 total_data$loan_status2 <- factor(total_data$loan_status)
@@ -214,10 +214,10 @@ total_data$loan_status2 <- as.numeric(total_data$loan_status2)
 
 Rejected <- total_data[total_data$loan_status2==2,] # Select minority samples
 Approved <- total_data[total_data$loan_status2 ==1,] # Select majority samples
-nrow(Rejected) # Rows in Rejected
-nrow(Approved) # Rows in Approved
+#nrow(Rejected) # Rows in Rejected
+#nrow(Approved) # Rows in Approved
 Rejected_boot <- Rejected[sample(1:nrow(Rejected), size = nrow(Approved), replace =TRUE),] # Create bootstrap sample
-nrow(Rejected_boot) # Check rows of bootstrap sample
+#nrow(Rejected_boot) # Check rows of bootstrap sample
 use_dat <- rbind.data.frame(Rejected_boot, Approved) # Join data together
 ```
 
@@ -236,7 +236,7 @@ fancyRpartPlot(tree_3) # Plot fancy tree
 
 To test how our model will perform on new data we can split the data into training and test sets. We will use the data which is already split into help and no help to ensure we have an equal proportion of samples in each class for both our training and test sets. We will use 20% of the data for testing. To do this we can use the stratified function which will create a stratified sample for our dataset.
 
-```{r train test}
+```{r train test, echo=FALSE}
  set.seed(123456) # Set seed
 
 total_data$loan_status <- as.factor(total_data$loan_status)
@@ -268,7 +268,7 @@ fancyRpartPlot(tree_5) # Plot fancy tree
 
 We can then predict the class of the test samples:
 
-```{r Predict new}
+```{r Predict new, echo=FALSE}
 preds <- predict(tree_5, test_dat) # Predict test samples
 ```
 
@@ -289,7 +289,7 @@ labs(y = "Probability",  # Set plot labels
 fill = "Approved",
 title = "Predicted Probabilities v Approved") +
 scale_fill_manual(values = c("Rejected" = "red", "Approved" = "blue"),) # Manually set fill values
-g_3
+#g_3
 
 
 g_4 <- ggplot(plot_dat, aes(x = probability, fill = response)) +
@@ -303,13 +303,13 @@ labs(x = "Probability",  # Set plot labels
 fill = "Approved",
 title = "Predicted Probabilities v Approved") +
 scale_fill_manual(values = c("Rejected" = "red", "Approved" = "blue"),) # Manually set fill values
-g_4
+#g_4
 
 ```
 
 Lets use a cut-off of 0.6 and see what the results would look like in a confusion matrix:
 
-```{r confusion matrix}
+```{r confusion matrix, echo=FALSE}
 preds_char <- rep("Rejected", nrow(plot_dat)) # Create vector for predictions with deafult value
 preds_char[which(plot_dat$probability >= 0.6)] <- "Approved" # Select sought help predictions
 # confusionMatrix(table(preds_char, as.factor(plot_dat$response))) # Create confusion matrix
@@ -317,7 +317,7 @@ preds_char[which(plot_dat$probability >= 0.6)] <- "Approved" # Select sought hel
 
 Lets see if using smote on the training data can help improve our accuracy;
 
-```{r smote preds}
+```{r smote preds, echo=FALSE}
 # Run smote
 smote_dat_2 <- SMOTE(loan_status ~ ., # Set prediction formula
 train_dat, # Set dataset
@@ -347,7 +347,7 @@ control = rpart.control(cp = 0)) # Select cp
 # Plot CP
 plotcp(tree_7)
 # Print CP
-printcp(tree_7)
+#printcp(tree_7)
 ```
 
 The cp appears to be minimized to about 0.081. Instead of returning probabilities from the prediction we can set \`type="class"\` in the predict function to get the function to return a class prediction.
@@ -362,13 +362,13 @@ control = rpart.control(cp = 0.081)) # Select cp
 # Predict test data
 preds <- predict(tree_8, test_dat, type = "class")
 
-confusionMatrix(table(preds,  test_dat$loan_status)) # Create confusion matrix
+#confusionMatrix(table(preds,  test_dat$loan_status)) # Create confusion matrix
 fancyRpartPlot(tree_8)
 ```
 
 ### Logistic Regression:
 
-```{r}
+```{r, echo=FALSE}
 total_data$loan_status <- abs(as.numeric(as.factor(total_data$loan_status)) - 2)
 ```
 
@@ -381,7 +381,9 @@ fit_1 <- glm(loan_status ~ .,
 summary(fit_1)
 ```
 
-```{r}
+### Logistic Lasso Model:
+
+```{r, echo=FALSE}
 # Converting the remaining categorical variables to numeric and scaling the variables 
 
 total_data$education <- abs(as.numeric(as.factor(total_data$education)) - 2)
@@ -393,7 +395,7 @@ x_vars <- model.matrix(loan_status ~.,
                        x_data)[,-1]
 ```
 
-```{r}
+```{r, echo=FALSE}
 # Determining the best lambda for a logistic lasso model
 
 set.seed(123)
