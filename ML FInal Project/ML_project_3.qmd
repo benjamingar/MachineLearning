@@ -52,11 +52,10 @@ library(glmnet)
 ```{r cars, echo=FALSE}
 #Ben total_data <- read.csv("~/Desktop/ML FInal Project/loan_approval_dataset 2.csv") # Load loan dataset
 
-# Brett 
-total_data <- read.csv("~/Desktop/Machine Learning/loan_approval_dataset 2.csv") # Load loan dataset
+# Brett total_data <- read.csv("~/Desktop/Machine Learning/loan_approval_dataset 2.csv") # Load loan dataset
 
 #Chance
-# total_data <- read.csv("~/Desktop/GraduateSchool/S2/Machine/loan_approval_dataset 2.csv")
+ total_data <- read.csv("~/Desktop/GraduateSchool/S2/Machine/loan_approval_dataset 2.csv")
 
 #Jack total_data <- 
 
@@ -373,7 +372,7 @@ control = rpart.control(cp = 0.081)) # Select cp
 # Predict test data
 preds <- predict(tree_8, test_dat, type = "class")
 
-#confusionMatrix(table(preds,  test_dat$loan_status)) # Create confusion matrix
+confusionMatrix(table(preds,  test_dat$loan_status)) # Create confusion matrix
 fancyRpartPlot(tree_8)
 ```
 
